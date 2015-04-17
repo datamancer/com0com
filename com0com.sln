@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "com2tcp", "com2tcp\com2tcp.vcxproj", "{4DF5E603-9690-4C6F-8C66-1D16613BCB17}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hub4com", "hub4com\hub4com.vcxproj", "{AC4EC208-ED55-4F9D-ACDD-A57642C3C296}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4DF5E603-9690-4C6F-8C66-1D16613BCB17}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4DF5E603-9690-4C6F-8C66-1D16613BCB17}.Debug|Win32.Build.0 = Debug|Win32
+		{4DF5E603-9690-4C6F-8C66-1D16613BCB17}.Release|Win32.ActiveCfg = Release|Win32
+		{4DF5E603-9690-4C6F-8C66-1D16613BCB17}.Release|Win32.Build.0 = Release|Win32
+		{AC4EC208-ED55-4F9D-ACDD-A57642C3C296}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AC4EC208-ED55-4F9D-ACDD-A57642C3C296}.Debug|Win32.Build.0 = Debug|Win32
+		{AC4EC208-ED55-4F9D-ACDD-A57642C3C296}.Release|Win32.ActiveCfg = Release|Win32
+		{AC4EC208-ED55-4F9D-ACDD-A57642C3C296}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
