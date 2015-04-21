@@ -64,6 +64,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="comdb.cpp" />
+    <ClCompile Include="devutils.cpp" />
+    <ClCompile Include="inffile.cpp" />
+    <ClCompile Include="msg.cpp" />
+    <ClCompile Include="params.cpp" />
+    <ClCompile Include="portnum.cpp" />
+    <ClCompile Include="setup.cpp" />
+    <ClCompile Include="utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="comdb.h" />
+    <ClInclude Include="devutils.h" />
+    <ClInclude Include="inffile.h" />
+    <ClInclude Include="msg.h" />
+    <ClInclude Include="params.h" />
+    <ClInclude Include="portnum.h" />
+    <ClInclude Include="precomp.h" />
+    <ClInclude Include="utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="setup.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="setup.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

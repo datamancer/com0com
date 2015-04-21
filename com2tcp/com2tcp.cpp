@@ -169,18 +169,19 @@ static void InOut(
 
   DWORD not_used;
 
-  BYTE cbufRead[1024];
+///TODO:  fix the damn buffer overflow bug.
+  BYTE cbufRead[4096];
   BOOL waitingRead = FALSE;
 
-  BYTE cbufSend[1024];
+  BYTE cbufSend[4096];
   int cbufSendSize = 0;
   int cbufSendDone = 0;
   BOOL waitingSend = FALSE;
 
-  BYTE cbufRecv[1024];
+  BYTE cbufRecv[4096];
   BOOL waitingRecv = FALSE;
 
-  BYTE cbufWrite[1024];
+  BYTE cbufWrite[4096];
   int cbufWriteSize = 0;
   int cbufWriteDone = 0;
   BOOL waitingWrite = FALSE;
@@ -946,6 +947,8 @@ int main(int argc, char* argv[])
   const char *pIF = NULL;
   char **pArgs = &argv[1];
   ComParams comParams;
+
+  setvbuf(stdout, NULL, _IONBF, 0);
 
   while (argc > 1) {
     if (**pArgs != '-')
