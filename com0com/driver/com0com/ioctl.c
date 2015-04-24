@@ -169,7 +169,7 @@
 #include "bufutils.h"
 #include "handflow.h"
 #include "commprop.h"
-#include "../include/cncext.h"
+#include "../../include/cncext.h"
 
 NTSTATUS FdoPortIoCtl(
     IN PC0C_FDOPORT_EXTENSION pDevExt,

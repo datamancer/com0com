@@ -1230,7 +1230,7 @@ VOID TraceOpen(
     StrFree(&msg);
 
     TraceF(NULL, "===== BEGIN =====");
-    TraceF(NULL, "VERSION " C0C_VERSION_STR " (" __DATE__ " " __TIME__ ")");
+	TraceF(NULL, "VERSION " C0C_VERSION_STR " (" __DATE__ " " __TIME__ ")");
 
     if (pTraceData->errorCount) {
       TraceDisable();

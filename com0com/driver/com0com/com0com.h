@@ -195,7 +195,7 @@
 #define _C0C_COM0COM_H_
 
 #define TEXT_PREF L
-#include "../include/com0com.h"
+#include "../../include/com0com.h"
 
 #define C0C_SERIAL_DEVICEMAP        L"SERIALCOMM"
 #define C0C_PREF_WIN32_DEVICE_NAME  L"\\DosDevices\\"

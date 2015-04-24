@@ -7,14 +7,33 @@
     </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Driver Files">
+      <UniqueIdentifier>{8E41214B-6785-4CFE-B992-037D68949A14}</UniqueIdentifier>
+      <Extensions>inf;inv;inx;mof;mc;</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="timeout.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trace.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tracetbl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="wait.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="wmi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="write.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -78,24 +97,30 @@
     <ClCompile Include="syslog.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="timeout.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="trace.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tracetbl.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="wait.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="wmi.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="showport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="strutils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="syslog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="timeout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="trace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="bufutils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="c0clog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="com0com.h">
@@ -122,24 +147,17 @@
     <ClInclude Include="rand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="showport.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="strutils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="syslog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="timeout.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="trace.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="version.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="com0com.inf">
+      <Filter>Driver Files</Filter>
+    </None>
+    <None Include="comport.inf">
+      <Filter>Driver Files</Filter>
+    </None>
+    <None Include="cncport.inf">
+      <Filter>Driver Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="com0com.rc">

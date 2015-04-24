@@ -89,7 +89,7 @@
 #include "precomp.h"
 #include "bufutils.h"
 #include "noise.h"
-#include "../include/cncext.h"
+#include "../../include/cncext.h"
 
 /*
  * FILE_ID used by HALT_UNLESS to put it on BSOD
