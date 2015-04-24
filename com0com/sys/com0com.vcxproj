@@ -64,6 +64,52 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="adddev.c" />
+    <ClCompile Include="bufutils.c" />
+    <ClCompile Include="commprop.c" />
+    <ClCompile Include="delay.c" />
+    <ClCompile Include="fileinfo.c" />
+    <ClCompile Include="handflow.c" />
+    <ClCompile Include="initunlo.c" />
+    <ClCompile Include="io.c" />
+    <ClCompile Include="ioctl.c" />
+    <ClCompile Include="noise.c" />
+    <ClCompile Include="openclos.c" />
+    <ClCompile Include="pinouts.c" />
+    <ClCompile Include="pnp.c" />
+    <ClCompile Include="power.c" />
+    <ClCompile Include="rand.c" />
+    <ClCompile Include="read.c" />
+    <ClCompile Include="showport.c" />
+    <ClCompile Include="startirp.c" />
+    <ClCompile Include="strutils.c" />
+    <ClCompile Include="syslog.c" />
+    <ClCompile Include="timeout.c" />
+    <ClCompile Include="trace.c" />
+    <ClCompile Include="tracetbl.c" />
+    <ClCompile Include="wait.c" />
+    <ClCompile Include="wmi.c" />
+    <ClCompile Include="write.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bufutils.h" />
+    <ClInclude Include="com0com.h" />
+    <ClInclude Include="commprop.h" />
+    <ClInclude Include="delay.h" />
+    <ClInclude Include="halt.h" />
+    <ClInclude Include="handflow.h" />
+    <ClInclude Include="noise.h" />
+    <ClInclude Include="precomp.h" />
+    <ClInclude Include="rand.h" />
+    <ClInclude Include="showport.h" />
+    <ClInclude Include="strutils.h" />
+    <ClInclude Include="syslog.h" />
+    <ClInclude Include="timeout.h" />
+    <ClInclude Include="trace.h" />
+    <ClInclude Include="version.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="com0com.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

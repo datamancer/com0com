@@ -161,7 +161,6 @@ static void InOut(
 
   WSAEventSelect(hSock, hEvents[EVENT_CLOSE], FD_CLOSE);
 
-  /////if (hSockListen != INVALID_SOCKET)
   if (pProtoNumber == P_UDP)
   	  WSAEventSelect(hSockListen, hEvents[EVENT_CLOSE], FD_CLOSE);
   else if (hSockListen != INVALID_SOCKET)
@@ -240,7 +239,6 @@ static void InOut(
       }
     }
 
-    /////if (!waitingRecv && !protocol.isWriteFull()) {
     if (pProtoNumber != P_UDP &&!waitingRecv && !protocol.isWriteFull()) {
       if (!ReadFile((HANDLE)hSock, cbufRecv, sizeof(cbufRecv), &not_used, &overlaps[EVENT_RECEIVED])) {
         if (::GetLastError() != ERROR_IO_PENDING) {
@@ -633,7 +631,6 @@ static HANDLE OpenC0C(const char *pPath, const ComParams &comParams)
 }
 ///////////////////////////////////////////////////////////////
 
-
 static BOOL SetAddr(struct sockaddr_in &sn, const char *pAddr, const char *pPort)
 {
   memset(&sn, 0, sizeof(sn));
@@ -642,7 +639,6 @@ static BOOL SetAddr(struct sockaddr_in &sn, const char *pAddr, const char *pPort
   if (pPort) {
     struct servent *pServEnt;
 
-    /////pServEnt = getservbyname(pPort, pProtoName);
 	pServEnt = getservbyname(pPort, pProtoName[pProtoNumber]);
 
     sn.sin_port = pServEnt ? pServEnt->s_port : htons((u_short)atoi(pPort));
@@ -663,22 +659,17 @@ static BOOL SetAddr(struct sockaddr_in &sn, const char *pAddr, const char *pPort
   return TRUE;
 }
 
-static SOCKET Socket(
-    const char *pIF,
-    const char *pPort = NULL)
+static SOCKET Socket(const char *pIF, const char *pPort = NULL)
 {
   const struct protoent *pProtoEnt;
 
-  /////pProtoEnt = getprotobyname(pProtoName);
   pProtoEnt = getprotobyname(pProtoName[pProtoNumber]);
 
   if (!pProtoEnt) {
-    /////TraceLastError("Socket(): getprotobyname(\"%s\")", pProtoName);
 	TraceLastError("Socket(): getprotobyname(\"%s\")", pProtoName[pProtoNumber]);
     return INVALID_SOCKET;
   }
 
-  /////SOCKET hSock = socket(AF_INET, SOCK_STREAM, pProtoEnt->p_proto);
   SOCKET hSock = socket(AF_INET, (pProtoNumber == P_TCP) ? SOCK_STREAM : SOCK_DGRAM, pProtoEnt->p_proto);
 
   if (hSock == INVALID_SOCKET) {
@@ -713,7 +704,6 @@ static void Disconnect(SOCKET hSock)
   printf("Disconnect() - OK\n");
 }
 ///////////////////////////////////////////////////////////////
-
 static SOCKET Accept(SOCKET hSockListen)
 {
   struct sockaddr_in sn;
@@ -735,59 +725,8 @@ static SOCKET Accept(SOCKET hSockListen)
 
   return hSock;
 }
-
-
-
-static int tcp2com(
-    const char *pPath,
-    const ComParams &comParams,
-    const char *pIF,
-    const char *pPort,
-    Protocol &protocol)
-{
-  SOCKET hSockListen = Socket(pIF, pPort);
-
-  if (hSockListen == INVALID_SOCKET)
-    return 2;
-
-  if (listen(hSockListen, SOMAXCONN) == SOCKET_ERROR) {
-    TraceLastError("tcp2com(): listen(\"%s\", \"%s\")", pIF, pPort);
-    closesocket(hSockListen);
-    return 2;
-  }
-
-  for (;;) {
-    SOCKET hSock = Accept(hSockListen);
-
-    if (hSock == INVALID_SOCKET)
-      break;
-
-    HANDLE hC0C = OpenC0C(pPath, comParams);
-
-    if (hC0C != INVALID_HANDLE_VALUE) {
-      if (comParams.ConnectDTR())
-        EscapeCommFunction(hC0C, SETDTR);
-
-      InOut(hC0C, hSock, protocol, comParams.IgnoreDSR(), hSockListen);
-
-      if (comParams.ConnectDTR())
-        EscapeCommFunction(hC0C, CLRDTR);
-
-      CloseHandle(hC0C);
-    }
-
-    Disconnect(hSock);
-  }
-
-  closesocket(hSockListen);
-
-  return 2;
-}
 ///////////////////////////////////////////////////////////////
-static SOCKET Connect(
-    const char *pIF,
-    const char *pAddr,
-    const char *pPort)
+static SOCKET Connect(const char *pIF, const char *pAddr, const char *pPort)
 {
   struct sockaddr_in sn;
 
@@ -850,6 +789,52 @@ static int com2udp2com(
 	CloseHandle(hC0C);
 	closesocket(hSockListen);
 	return 2;
+}
+
+static int tcp2com(
+	const char *pPath, 
+	const ComParams &comParams, 
+	const char *pIF, 
+	const char *pPort, 
+	Protocol &protocol)
+{
+  SOCKET hSockListen = Socket(pIF, pPort);
+
+  if (hSockListen == INVALID_SOCKET)
+    return 2;
+
+  if (listen(hSockListen, SOMAXCONN) == SOCKET_ERROR) {
+    TraceLastError("tcp2com(): listen(\"%s\", \"%s\")", pIF, pPort);
+    closesocket(hSockListen);
+    return 2;
+  }
+
+  for (;;) {
+    SOCKET hSock = Accept(hSockListen);
+
+    if (hSock == INVALID_SOCKET)
+      break;
+
+    HANDLE hC0C = OpenC0C(pPath, comParams);
+
+    if (hC0C != INVALID_HANDLE_VALUE) {
+      if (comParams.ConnectDTR())
+        EscapeCommFunction(hC0C, SETDTR);
+
+      InOut(hC0C, hSock, protocol, comParams.IgnoreDSR(), hSockListen);
+
+      if (comParams.ConnectDTR())
+        EscapeCommFunction(hC0C, CLRDTR);
+
+      CloseHandle(hC0C);
+    }
+
+    Disconnect(hSock);
+  }
+
+  closesocket(hSockListen);
+
+  return 2;
 }
 
 static int com2tcp(
@@ -1040,7 +1025,6 @@ int main(int argc, char* argv[])
     }
   }
 
-  /////if (argc < 3 || argc > 4)
   if (argc < 3 || argc > 5 || (argc == 5 && pProtoNumber != P_UDP))
     Usage(argv[0]);
 
@@ -1061,8 +1045,8 @@ int main(int argc, char* argv[])
 
   int res;
 
-  /////if (argc == 4)
   printf("argc %i\n\r", argc);
+
   if (argc == 5)
     res = com2udp2com(pArgs[0], comParams, pIF, pArgs[1], pArgs[2], pArgs[3], *pProtocol, pAwakSeq);
   else if (argc == 4)
