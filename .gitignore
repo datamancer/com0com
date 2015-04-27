@@ -17,6 +17,8 @@
 [Rr]eleases/
 x64/
 x86/
+[Ww]in32/
+AnyCPU/
 build/
 bld/
 [Bb]in/

@@ -149,19 +149,19 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="com0com.inf">
-      <Filter>Driver Files</Filter>
-    </None>
-    <None Include="comport.inf">
-      <Filter>Driver Files</Filter>
-    </None>
-    <None Include="cncport.inf">
-      <Filter>Driver Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="com0com.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Inf Include="cncport.inf">
+      <Filter>Driver Files</Filter>
+    </Inf>
+    <Inf Include="com0com.inf">
+      <Filter>Driver Files</Filter>
+    </Inf>
+    <Inf Include="comport.inf">
+      <Filter>Driver Files</Filter>
+    </Inf>
   </ItemGroup>
 </Project>

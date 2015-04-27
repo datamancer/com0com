@@ -7,14 +7,14 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\com0com\cncport.inf">
+    <Inf Include="..\com0com\cncport.inf">
       <Filter>Driver Files</Filter>
-    </None>
-    <None Include="..\com0com\com0com.inf">
+    </Inf>
+    <Inf Include="..\com0com\com0com.inf">
       <Filter>Driver Files</Filter>
-    </None>
-    <None Include="..\com0com\comport.inf">
+    </Inf>
+    <Inf Include="..\com0com\comport.inf">
       <Filter>Driver Files</Filter>
-    </None>
+    </Inf>
   </ItemGroup>
 </Project>
