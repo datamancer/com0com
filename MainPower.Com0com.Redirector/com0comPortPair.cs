@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Management;
@@ -26,8 +27,9 @@ namespace MainPower.Com0com.Redirector
         Idle,
     }
 
-    public class com0comPortPair : INotifyPropertyChanged
+    public class Com0comPortPair : INotifyPropertyChanged
     {
+        #region Fields
         private string _portConfigStringA = "";
         private string _portConfigStringB = "";
         private Process _p;
@@ -37,7 +39,10 @@ namespace MainPower.Com0com.Redirector
         private string _remoteIP = "";
         private string _remotePort = "";
         private string _localPort = "";
-       
+        
+        #endregion
+
+        #region Properties
 
         public int PairNumber { get; private set; }
         public string PortNameA { get; private set; }
@@ -112,7 +117,7 @@ namespace MainPower.Com0com.Redirector
         public string PortConfigStringA
         {
             get { return _portConfigStringA; }
-            private set
+            set
             {
                 Regex regex = new Regex(@"(?<=PortName=)\w+(?=,)");
                 _portConfigStringA = value;
@@ -126,7 +131,7 @@ namespace MainPower.Com0com.Redirector
         public string PortConfigStringB 
         {
             get { return _portConfigStringB; }
-            private set
+            set
             {
                 Regex regex = new Regex(@"(?<=PortName=)\w+(?=,)");
                 _portConfigStringB = value;
@@ -137,71 +142,44 @@ namespace MainPower.Com0com.Redirector
                 
             }
         }
-        
 
-        public com0comPortPair()
+        #endregion
+
+        public Com0comPortPair(int number)
         {
             RemoteIP = "192.168.7.1";
             RemotePort = "8882";
             LocalPort = "8883";
-            
-            
+            PairNumber = number;
         }
+
+        #region Static Functions
+      
         /// <summary>
-        /// Get all com0com Port Pairs currently installed in the system.
+        /// Kill a process, and all of its children, grandchildren, etc.
         /// </summary>
-        /// <returns></returns>
-        public static ObservableCollection<com0comPortPair> GetPortPairs()
+        /// <param name="pid">Process ID.</param>
+        private static void KillProcessAndChildren(int pid)
         {
-            
-            ObservableCollection<com0comPortPair> ports = new ObservableCollection<com0comPortPair>();
-            //get the output from setupc --detail-prms list
-            var proc = new Process
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher
+              ("Select * From Win32_Process Where ParentProcessID=" + pid);
+            ManagementObjectCollection moc = searcher.Get();
+            foreach (ManagementObject mo in moc)
             {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = @"C:\Program Files (x86)\com0com\setupc.exe",
-                    Arguments = "--detail-prms list",
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true
-                }
-            };
-            
-            proc.Start();
-            while (!proc.StandardOutput.EndOfStream)
+                KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));
+            }
+            try
             {
-                try
-                {
-                    string line = proc.StandardOutput.ReadLine();
-                    //get port number
-                    Regex regex = new Regex(@"(?<=CNC[A,B])\d+(?=\s)");
-                    int portnum = int.Parse(regex.Match(line).Value);
-                    com0comPortPair pair = ports.FirstOrDefault(d => d.PairNumber == portnum);
-                    if (pair == null)
-                    {
-                        pair = new com0comPortPair();
-                        pair.PairNumber = portnum;
-                        ports.Add(pair);
-                    }
-                    regex = new Regex(@"(?<=CNC)[A,B](?=\d+\s)");
-                    string portAB = regex.Match(line).Value;
-                    if (portAB == "A")
-                    {
-                        pair.PortConfigStringA = line;
-                    }
-                    else if (portAB == "B")
-                    {
-                        pair.PortConfigStringB = line;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-            }           
-            return ports;
+                Process proc = Process.GetProcessById(pid);
+                proc.Kill();
+            }
+            catch
+            {
+                //we might get exceptions here, as parent might auto exit once their children are terminated
+            }
         }
+
+        #endregion
 
         public void StartComms()
         {
@@ -252,21 +230,6 @@ namespace MainPower.Com0com.Redirector
             CommsStatus = CommsStatus.Running;
         }
 
-        void _p_ErrorDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            OutputData += e.Data + Environment.NewLine;
-        }
-
-        void _p_OutputDataReceived(object sender, DataReceivedEventArgs e)
-        {
-            OutputData += e.Data + Environment.NewLine;
-        }
-
-        void _p_Exited(object sender, EventArgs e)
-        {
-            CommsStatus = CommsStatus.Idle;
-        }
-
         public void StopComms()
         {
             if (_p == null)
@@ -277,10 +240,24 @@ namespace MainPower.Com0com.Redirector
             if (_p.HasExited)
                 return;
             KillProcessAndChildren(_p.Id);
-                
-
         }
 
+        private void _p_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            OutputData += e.Data + Environment.NewLine;
+        }
+
+        private void _p_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            OutputData += e.Data + Environment.NewLine;
+        }
+
+        private void _p_Exited(object sender, EventArgs e)
+        {
+            CommsStatus = CommsStatus.Idle;
+        }
+
+        #region INotifyPropertyChangedMembers
         protected virtual void OnPropertyChanged(string propertyName)
         {
             this.VerifyPropertyName(propertyName);
@@ -311,28 +288,8 @@ namespace MainPower.Com0com.Redirector
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>
-        /// Kill a process, and all of its children, grandchildren, etc.
-        /// </summary>
-        /// <param name="pid">Process ID.</param>
-        private static void KillProcessAndChildren(int pid)
-        {
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher
-              ("Select * From Win32_Process Where ParentProcessID=" + pid);
-            ManagementObjectCollection moc = searcher.Get();
-            foreach (ManagementObject mo in moc)
-            {
-                KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));
-            }
-            try
-            {
-                Process proc = Process.GetProcessById(pid);
-                proc.Kill();
-            }
-            catch (ArgumentException)
-            {
-                // Process already exited.
-            }
-        }
+        #endregion
+
+        
     }
 }
